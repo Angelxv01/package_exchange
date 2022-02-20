@@ -17,9 +17,9 @@ export default function App() {
   }, [user]);
 
   const calculateValue = (name, number) =>
-    name &&
-    number &&
-    Math.round(number * downloads[[name]].downloadPerUnit * 10000) / 10000;
+    user &&
+    downloads &&
+    Math.round(number * downloads[[name]]?.downloadPerUnit * 10000) / 10000;
 
   return (
     <div>
@@ -32,7 +32,7 @@ export default function App() {
       {user?.shares?.map(({ name, number }) => (
         <div key={name}>
           <p>{`${name} - ${number}`}</p>
-          <p>{calculateValue(name, number)}</p>
+          <p>{calculateValue(name, number) || 'Loading'}</p>
         </div>
       ))}
     </div>
