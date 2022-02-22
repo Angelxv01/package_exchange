@@ -1,3 +1,4 @@
+import { Container, Typography, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { getRepositories } from './service/packageDownload';
 import { getUser } from './service/user';
@@ -22,19 +23,17 @@ export default function App() {
     Math.round(number * downloads[[name]]?.downloadPerUnit * 10000) / 10000;
 
   return (
-    <div>
-      <p>
-        Hello
-        {` ${user?.name}!`}
-      </p>
+    <Container>
+      <Typography variant="h1">{`Hello ${user?.name}!`}</Typography>
 
-      <h2>My Shares</h2>
-      {user?.shares?.map(({ name, number }) => (
-        <div key={name}>
-          <p>{`${name} - ${number}`}</p>
-          <p>{calculateValue(name, number) || 'Loading'}</p>
-        </div>
-      ))}
-    </div>
+      <Typography variant="h2">My Shares</Typography>
+      <Box>
+        {user?.shares?.map(({ name, number }) => (
+          <Typography key={name}>{`${name} - ${number} - ${
+            calculateValue(name, number) || 'Loading'
+          }`}</Typography>
+        ))}
+      </Box>
+    </Container>
   );
 }
