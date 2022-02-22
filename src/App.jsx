@@ -2,37 +2,59 @@ import { Container, Typography, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { getRepositories } from './service/packageDownload';
 import { getUser } from './service/user';
+import { USD } from './utils/format';
 
 const CURRENT_USER = '25660cec-8d41-47e7-b208-165ec6ef20cd';
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [downloads, setDownloads] = useState(null);
-  useEffect(() => getUser(CURRENT_USER).then((data) => setUser(data)), []);
+
   useEffect(() => {
-    if (user) {
-      getRepositories(user?.shares?.map((share) => share.name)).then((data) =>
-        setDownloads(data),
-      );
-    }
+    const initUser = async () => {
+      const user = await getUser(CURRENT_USER);
+      setUser(user);
+    };
+    !user && initUser();
   }, [user]);
-  if (!(user || downloads)) return null;
+
+  useEffect(() => {
+    const initDownloads = async () => {
+      const downloads = await getRepositories(
+        user?.shares?.map((share) => share.name),
+      );
+      setDownloads(downloads);
+    };
+    user && initDownloads();
+  }, [user]);
+
+  if (!(user && downloads)) return null;
 
   const calculateValue = (name, number) =>
     Math.round(number * downloads[[name]]?.downloadPerUnit * 10000) / 10000;
+  const balance =
+    user?.cash +
+    user?.shares?.reduce(
+      (sum, { name, number }) => sum + calculateValue(name, number),
+      0,
+    );
 
   return (
     <Container>
-      <Typography variant="h3">{`Hello ${user?.name}!`}</Typography>
-      <Typography variant="h4">My Shares</Typography>
+      <Typography variant="h3">{`Hi ${user?.name}!`}</Typography>
 
       <Box>
-        {user?.shares?.map(({ name, number }) => (
-          <Typography key={name}>{`${name} - ${number} - ${
-            calculateValue(name, number) || 'Loading'
-          }`}</Typography>
-        ))}
+        <Typography variant="h5">My Balance</Typography>
+        <Typography>{USD.format(balance)}</Typography>
       </Box>
     </Container>
   );
 }
+
+const ShareList = ({ shares }) => {
+  shares?.map(({ name, number }) => (
+    <Typography key={name}>{`${name} - ${number} - ${
+      calculateValue(name, number) || 'Loading'
+    }`}</Typography>
+  ));
+};
