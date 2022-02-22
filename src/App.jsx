@@ -16,17 +16,16 @@ export default function App() {
       );
     }
   }, [user]);
+  if (!(user || downloads)) return null;
 
   const calculateValue = (name, number) =>
-    user &&
-    downloads &&
     Math.round(number * downloads[[name]]?.downloadPerUnit * 10000) / 10000;
 
   return (
     <Container>
-      <Typography variant="h1">{`Hello ${user?.name}!`}</Typography>
+      <Typography variant="h3">{`Hello ${user?.name}!`}</Typography>
+      <Typography variant="h4">My Shares</Typography>
 
-      <Typography variant="h2">My Shares</Typography>
       <Box>
         {user?.shares?.map(({ name, number }) => (
           <Typography key={name}>{`${name} - ${number} - ${
