@@ -46,6 +46,7 @@ export default function App() {
       <Box>
         <Typography variant="h5">My Balance</Typography>
         <Typography>{USD.format(balance)}</Typography>
+        <Typography>{CURRENT_USER}</Typography>
       </Box>
     </Container>
   );
