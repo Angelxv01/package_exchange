@@ -30,12 +30,12 @@ export default function App() {
 
   if (!(user && downloads)) return null;
 
-  const calculateValue = (name, number) =>
+  const calculateShareValue = (name, number) =>
     Math.round(number * downloads[[name]]?.downloadPerUnit * 10000) / 10000;
   const balance =
     user?.cash +
     user?.shares?.reduce(
-      (sum, { name, number }) => sum + calculateValue(name, number),
+      (sum, { name, number }) => sum + calculateShareValue(name, number),
       0,
     );
 
@@ -50,11 +50,3 @@ export default function App() {
     </Container>
   );
 }
-
-const ShareList = ({ shares }) => {
-  shares?.map(({ name, number }) => (
-    <Typography key={name}>{`${name} - ${number} - ${
-      calculateValue(name, number) || 'Loading'
-    }`}</Typography>
-  ));
-};
