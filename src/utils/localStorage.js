@@ -1,12 +1,10 @@
 export const loadState = (state) => {
   try {
     const serializedState = localStorage.getItem(state);
-    if (serializedState === null) {
-      return undefined;
-    }
+    if (serializedState === null) return;
     return JSON.parse(serializedState);
   } catch (err) {
-    return undefined;
+    return;
   }
 };
 
@@ -22,6 +20,13 @@ export const saveTempState = (state, serializedState) => {
   expireDate.setHours(24, 0, 0, 0);
 
   saveState(state, { data: serializedState, expireDate });
+};
+
+export const loadTempState = (state) => {
+  const currentState = loadState(state);
+  if (!currentState) return;
+  if (new Date(currentState.expireDate) > new Date()) return currentState.data;
+  return undefined;
 };
 
 export const removeState = (state) => {

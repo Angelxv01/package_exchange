@@ -1,10 +1,11 @@
-import { Container, Typography, Box } from '@mui/material';
+import { Container, Typography, Box, Stack, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { getRepositories } from './service/packageDownload';
 import { getUser } from './service/user';
 import { USD } from './utils/format';
 
 const CURRENT_USER = '25660cec-8d41-47e7-b208-165ec6ef20cd';
+// const CURRENT_USER = 'de200efe-c9d3-4f12-b295-919daeec2914';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -19,13 +20,15 @@ export default function App() {
   }, [user]);
 
   useEffect(() => {
+    if (!user) return;
     const initDownloads = async () => {
       const downloads = await getRepositories(
         user?.shares?.map((share) => share.name),
       );
       setDownloads(downloads);
     };
-    user && initDownloads();
+
+    initDownloads();
   }, [user]);
 
   if (!(user && downloads)) return null;
@@ -41,13 +44,35 @@ export default function App() {
 
   return (
     <Container>
-      <Typography variant="h3">{`Hi ${user?.name}!`}</Typography>
+      <Stack spacing={2}>
+        <Typography variant="h3">{`Hi ${user?.name}!`}</Typography>
 
-      <Box>
-        <Typography variant="h5">My Balance</Typography>
-        <Typography>{USD.format(balance)}</Typography>
-        <Typography>{CURRENT_USER}</Typography>
-      </Box>
+        <Box>
+          <Typography variant="h5">My Balance</Typography>
+          <Typography>{USD.format(balance)}</Typography>
+          <Typography>{CURRENT_USER}</Typography>
+        </Box>
+
+        <Box>
+          <Typography variant="h5">Packages</Typography>
+          <Grid container>
+            {user?.shares?.map(({ name, number }) => (
+              <Grid
+                item
+                key={name}
+                xs={3}
+                sx={{
+                  textAlign: 'center',
+                  borderRadius: '0.5rem',
+                }}
+              >
+                <Typography>{name}</Typography>
+                <Typography>{number}</Typography>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Stack>
     </Container>
   );
 }
