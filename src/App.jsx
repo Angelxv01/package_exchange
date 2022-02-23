@@ -1,7 +1,15 @@
-import { Container, Typography, Box, Stack, Grid } from '@mui/material';
+import {
+  Container,
+  Typography,
+  Box,
+  Stack,
+  Grid,
+  Paper,
+  Button,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { getRepositories } from './service/packageDownload';
-import { getUser } from './service/user';
+import { getRepositories } from './services/packageDownload';
+import { getUser } from './services/user';
 import { USD } from './utils/format';
 
 const CURRENT_USER = '25660cec-8d41-47e7-b208-165ec6ef20cd';
@@ -45,16 +53,23 @@ export default function App() {
   return (
     <Container>
       <Stack spacing={2}>
-        <Typography variant="h3">{`Hi ${user?.name}!`}</Typography>
+        <Typography
+          variant="h3"
+          component="h1"
+        >{`Hi ${user?.name}!`}</Typography>
 
-        <Box>
-          <Typography variant="h5">My Balance</Typography>
+        <Paper>
+          <Typography variant="h5" component="h2">
+            My Balance
+          </Typography>
           <Typography>{USD.format(balance)}</Typography>
           <Typography>{CURRENT_USER}</Typography>
-        </Box>
+        </Paper>
 
-        <Box>
-          <Typography variant="h5">Packages</Typography>
+        <Paper>
+          <Typography variant="h5" component="h2">
+            Packages
+          </Typography>
           <Grid container>
             {user?.shares?.map(({ name, number }) => (
               <Grid
@@ -71,7 +86,7 @@ export default function App() {
               </Grid>
             ))}
           </Grid>
-        </Box>
+        </Paper>
       </Stack>
     </Container>
   );
