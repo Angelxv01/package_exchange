@@ -67,11 +67,10 @@ export default function App() {
               <Grid
                 item
                 key={name}
-                xs={3}
+                xs={2}
                 textAlign="center"
-                borderRadius="0.5rem"
-                border={1}
-                borderColor="primary.main"
+                bgcolor="common.white"
+                borderRadius={1}
               >
                 <Typography>{name}</Typography>
                 <Typography>{number}</Typography>
@@ -85,11 +84,8 @@ export default function App() {
 }
 
 // eslint-disable-next-line react/prop-types
-const SectionPaper = ({ children }) => (
-  <Paper
-    elevation={0}
-    sx={{ py: 2, px: 1, border: 3, borderColor: 'primary.main' }}
-  >
+const SectionPaper = ({ children, ...props }) => (
+  <Paper py={2} px={1} elevation={0}>
     {children}
   </Paper>
 );
