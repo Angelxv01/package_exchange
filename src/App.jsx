@@ -62,14 +62,17 @@ export default function App() {
           </Typography>
           <Typography variant="h3">{USD.format(balance)}</Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {CURRENT_USER.split('-')[0]} * * *
+            {CURRENT_USER.split('-')[0]} * * * *
           </Typography>
         </SectionPaper>
 
         <SectionPaper>
-          <Typography variant="h5" component="h2">
-            Packages
-          </Typography>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Icon glyph="transactions" size={32} />
+            <Typography variant="h5" component="h2">
+              Packages
+            </Typography>
+          </Box>
           <Grid container gap="1rem" mt="0.5rem">
             {user?.shares?.map(({ name, number }) => (
               <Grid
