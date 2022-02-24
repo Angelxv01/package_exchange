@@ -51,11 +51,17 @@ export default function App() {
         >{`Hi ${user?.name}!`}</Typography>
 
         <SectionPaper>
-          <Typography variant="h5" component="h2">
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{ color: 'text.secondary' }}
+          >
             My Balance
           </Typography>
-          <Typography>{USD.format(balance)}</Typography>
-          <Typography>{CURRENT_USER}</Typography>
+          <Typography variant="h3">{USD.format(balance)}</Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            {CURRENT_USER.split('-')[0]} * * *
+          </Typography>
         </SectionPaper>
 
         <SectionPaper>
@@ -84,8 +90,19 @@ export default function App() {
 }
 
 // eslint-disable-next-line react/prop-types
-const SectionPaper = ({ children, ...props }) => (
-  <Paper py={2} px={1} elevation={0}>
-    {children}
-  </Paper>
-);
+const SectionPaper = ({ children, sx, ...props }) => {
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        py: 1,
+        px: 2,
+        borderRadius: 1.5,
+        ...sx,
+      }}
+      {...props}
+    >
+      {children}
+    </Paper>
+  );
+};
