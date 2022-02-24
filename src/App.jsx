@@ -1,8 +1,9 @@
-import { Container, Typography, Stack, Grid, Paper } from '@mui/material';
+import { Container, Typography, Stack, Grid, Paper, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { getRepositories } from './services/packageDownload';
 import { getUser } from './services/user';
 import { USD } from './utils/format';
+import Icon from 'supercons';
 
 const CURRENT_USER = '25660cec-8d41-47e7-b208-165ec6ef20cd';
 // const CURRENT_USER = 'de200efe-c9d3-4f12-b295-919daeec2914';
@@ -43,7 +44,8 @@ export default function App() {
     );
 
   return (
-    <Container py={2}>
+    <Container sx={{ px: 2 }}>
+      <Icon glyph="search" size={32} />
       <Stack spacing={2}>
         <Typography
           variant="h3"
