@@ -1,12 +1,4 @@
-import {
-  Container,
-  Typography,
-  Box,
-  Stack,
-  Grid,
-  Paper,
-  Button,
-} from '@mui/material';
+import { Container, Typography, Stack, Grid, Paper } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { getRepositories } from './services/packageDownload';
 import { getUser } from './services/user';
@@ -51,43 +43,53 @@ export default function App() {
     );
 
   return (
-    <Container>
+    <Container py={2}>
       <Stack spacing={2}>
         <Typography
           variant="h3"
           component="h1"
         >{`Hi ${user?.name}!`}</Typography>
 
-        <Paper>
+        <SectionPaper>
           <Typography variant="h5" component="h2">
             My Balance
           </Typography>
           <Typography>{USD.format(balance)}</Typography>
           <Typography>{CURRENT_USER}</Typography>
-        </Paper>
+        </SectionPaper>
 
-        <Paper>
+        <SectionPaper>
           <Typography variant="h5" component="h2">
             Packages
           </Typography>
-          <Grid container>
+          <Grid container gap="1rem" mt="0.5rem">
             {user?.shares?.map(({ name, number }) => (
               <Grid
                 item
                 key={name}
                 xs={3}
-                sx={{
-                  textAlign: 'center',
-                  borderRadius: '0.5rem',
-                }}
+                textAlign="center"
+                borderRadius="0.5rem"
+                border={1}
+                borderColor="primary.main"
               >
                 <Typography>{name}</Typography>
                 <Typography>{number}</Typography>
               </Grid>
             ))}
           </Grid>
-        </Paper>
+        </SectionPaper>
       </Stack>
     </Container>
   );
 }
+
+// eslint-disable-next-line react/prop-types
+const SectionPaper = ({ children }) => (
+  <Paper
+    elevation={0}
+    sx={{ py: 2, px: 1, border: 3, borderColor: 'primary.main' }}
+  >
+    {children}
+  </Paper>
+);
