@@ -36,7 +36,13 @@ export const getRepositoriesLastDay = async (repositoryNames) => {
     repositoriesPromise.push(axios.get(`${url}/${repositoryNames[i]}`));
   }
 
-  const repositoriesDownloads = await Promise.all(repositoriesPromise);
+  let repositoriesDownloads;
+  try {
+    repositoriesDownloads = await Promise.all(repositoriesPromise);
+  } catch (e) {
+    return;
+  }
+
   return repositoriesDownloads.reduce((acc, { data: repository }) => {
     acc[[repository.package]] = {
       ...repository,
