@@ -8,14 +8,17 @@ export default createTheme({
     },
   },
   palette: {
-    common: {
-      white: '#fafcff',
-    },
     primary: {
       main: '#ffb3b9',
     },
     secondary: {
       main: '#fcf5c7',
+    },
+    background: {
+      default: '#fafcff',
+    },
+    custom: {
+      gray: '#efeff6',
     },
   },
 });

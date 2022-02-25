@@ -1,4 +1,12 @@
-import { Container, Typography, Stack, Grid, Paper, Box } from '@mui/material';
+import {
+  Container,
+  Typography,
+  Stack,
+  Grid,
+  Paper,
+  Box,
+  Chip,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { getRepositories } from './services/packageDownload';
 import { getUser } from './services/user';
@@ -44,13 +52,23 @@ export default function App() {
     );
 
   return (
-    <Container sx={{ px: 2 }}>
+    <Container sx={{ px: 1 }}>
       <Icon glyph="search" size={32} />
       <Stack spacing={2}>
-        <Typography
-          variant="h3"
-          component="h1"
-        >{`Hi ${user?.name}!`}</Typography>
+        <Box display="flex" alignItems="center" gap={1}>
+          <Typography
+            variant="h3"
+            component="h1"
+          >{`Hi ${user?.name}!`}</Typography>
+          <Chip
+            label="pro"
+            sx={{
+              background:
+                'linear-gradient(45deg, rgba(255,179,185,1) 0%, rgba(252,245,199,1) 100%)',
+              fontWeight: 'bold',
+            }}
+          />
+        </Box>
 
         <SectionPaper>
           <Typography
@@ -66,14 +84,14 @@ export default function App() {
           </Typography>
         </SectionPaper>
 
-        <SectionPaper>
+        <SectionPaper sx={{ bgcolor: 'custom.gray', py: 2 }}>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Icon glyph="transactions" size={32} />
             <Typography variant="h5" component="h2">
               Packages
             </Typography>
           </Box>
-          <Grid container gap="1rem" mt="0.5rem">
+          <Grid container gap={2} mt={2}>
             {user?.shares?.map(({ name, number }) => (
               <Grid
                 item
@@ -81,10 +99,18 @@ export default function App() {
                 xs={2}
                 textAlign="center"
                 bgcolor="common.white"
-                borderRadius={1}
+                borderRadius={2}
+                py={2}
+                px={1}
+                sx={{
+                  background:
+                    'linear-gradient(45deg, rgba(255,179,185,1) 0%, rgba(252,245,199,1) 100%)',
+                }}
               >
-                <Typography>{name}</Typography>
-                <Typography>{number}</Typography>
+                <Typography fontWeight="bold">{name}</Typography>
+                <Typography mt={1} fontWeight="bold">
+                  {number}
+                </Typography>
               </Grid>
             ))}
           </Grid>
@@ -102,7 +128,7 @@ const SectionPaper = ({ children, sx, ...props }) => {
       sx={{
         py: 1,
         px: 2,
-        borderRadius: 1.5,
+        borderRadius: 2,
         ...sx,
       }}
       {...props}
