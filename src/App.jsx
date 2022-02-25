@@ -16,7 +16,7 @@ import {
   getLastDayPackageDownload,
 } from './services/packageDownload';
 import { getUser } from './services/user';
-import { USD } from './utils/format';
+import { NUMBER, USD } from './utils/format';
 import Icon from 'supercons';
 
 // const CURRENT_USER = '25660cec-8d41-47e7-b208-165ec6ef20cd';
@@ -63,9 +63,8 @@ export default function App() {
     e.preventDefault();
     const data = await getLastDayPackageDownload(filter);
     setSelected(data);
+    setFilter('');
   };
-
-  console.log(selected);
 
   return (
     <Container sx={{ p: 1 }}>
@@ -150,6 +149,24 @@ export default function App() {
             Search
           </Button>
         </Box>
+
+        {selected && (
+          <SectionPaper
+            sx={{
+              bgcolor: 'custom.gray',
+              py: 2,
+              display: 'flex',
+              alignItems: 'baseline',
+              justifyContent: 'space-between',
+              gap: 2,
+            }}
+          >
+            <Typography variant="h5">{selected.package}</Typography>
+            <Typography variant="h6">
+              {NUMBER.format(selected.downloadPerUnit)}
+            </Typography>
+          </SectionPaper>
+        )}
       </Stack>
     </Container>
   );
