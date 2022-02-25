@@ -11,11 +11,13 @@ import {
   TextField,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { getRepositoriesLastDay } from './services/packageDownload';
+import {
+  getLastDayPackagesDownload,
+  getLastDayPackageDownload,
+} from './services/packageDownload';
 import { getUser } from './services/user';
 import { USD } from './utils/format';
 import Icon from 'supercons';
-import findPackage from './services/searchPackage';
 
 // const CURRENT_USER = '25660cec-8d41-47e7-b208-165ec6ef20cd';
 const CURRENT_USER = 'de200efe-c9d3-4f12-b295-919daeec2914';
@@ -23,8 +25,8 @@ const CURRENT_USER = 'de200efe-c9d3-4f12-b295-919daeec2914';
 export default function App() {
   const [user, setUser] = useState(null);
   const [downloads, setDownloads] = useState(null);
-  const [exist, setExist] = useState(false);
   const [filter, setFilter] = useState('');
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     const initUser = async () => {
@@ -37,7 +39,7 @@ export default function App() {
   useEffect(() => {
     if (!user) return;
     const initDownloads = async () => {
-      const downloads = await getRepositoriesLastDay(
+      const downloads = await getLastDayPackagesDownload(
         user?.shares?.map((share) => share.name),
       );
       setDownloads(downloads);
@@ -59,9 +61,11 @@ export default function App() {
 
   const searchPackage = async (e) => {
     e.preventDefault();
-    const data = await getRepositoriesLastDay([filter]);
-    console.log(data);
+    const data = await getLastDayPackageDownload(filter);
+    setSelected(data);
   };
+
+  console.log(selected);
 
   return (
     <Container sx={{ p: 1 }}>
