@@ -5,10 +5,10 @@ const UNITS = 10000;
 
 /**
  * @description  uses the npmjs' batch API to get repository downloads
- * @param {[string]} repositoryNames is an array of repository name
+ * @param {string[]} repositoryNames is an array of repository name
  * @returns an string key object, each key is the name of repository
  */
-export const batchRepositories = async (repositoryNames) => {
+export const batchRepositoriesLastDay = async (repositoryNames) => {
   const { data: repositories } = await axios.get(
     `${url}/${repositoryNames.join(',')}`,
   );
@@ -25,23 +25,23 @@ export const batchRepositories = async (repositoryNames) => {
   return result;
 };
 
-export const getRepositories = async (repositoryNames) => {
+/**
+ * @description uses npmjs repository API to get the repository daily downloads
+ * @param {string[]} repositoryNames string array of repository names
+ * @returns string key object containing the package information
+ */
+export const getRepositoriesLastDay = async (repositoryNames) => {
   const repositoriesPromise = [];
   for (let i = 0; i < repositoryNames.length; i++) {
     repositoriesPromise.push(axios.get(`${url}/${repositoryNames[i]}`));
   }
 
   const repositoriesDownloads = await Promise.all(repositoriesPromise);
-  const result = repositoriesDownloads.reduce((acc, { data: repository }) => {
+  return repositoriesDownloads.reduce((acc, { data: repository }) => {
     acc[[repository.package]] = {
       ...repository,
       downloadPerUnit: repository.downloads / UNITS,
     };
-
     return acc;
   }, {});
-
-  console.log(result);
-
-  return result;
 };

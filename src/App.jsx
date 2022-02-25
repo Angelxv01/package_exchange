@@ -8,7 +8,7 @@ import {
   Chip,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { getRepositories } from './services/packageDownload';
+import { getRepositoriesLastDay } from './services/packageDownload';
 import { getUser } from './services/user';
 import { USD } from './utils/format';
 import Icon from 'supercons';
@@ -31,7 +31,7 @@ export default function App() {
   useEffect(() => {
     if (!user) return;
     const initDownloads = async () => {
-      const downloads = await getRepositories(
+      const downloads = await getRepositoriesLastDay(
         user?.shares?.map((share) => share.name),
       );
       setDownloads(downloads);
@@ -52,8 +52,7 @@ export default function App() {
     );
 
   return (
-    <Container sx={{ px: 1 }}>
-      <Icon glyph="search" size={32} />
+    <Container sx={{ p: 1 }}>
       <Stack spacing={2}>
         <Box display="flex" alignItems="center" gap={1}>
           <Typography
@@ -91,7 +90,7 @@ export default function App() {
               Packages
             </Typography>
           </Box>
-          <Grid container gap={2} mt={2}>
+          <Grid container gap={2} mt={2} justifyContent="center">
             {user?.shares?.map(({ name, number }) => (
               <Grid
                 item
@@ -100,8 +99,8 @@ export default function App() {
                 textAlign="center"
                 bgcolor="common.white"
                 borderRadius={2}
-                py={2}
-                px={1}
+                py={1}
+                px={2}
                 sx={{
                   background:
                     'linear-gradient(45deg, rgba(255,179,185,1) 0%, rgba(252,245,199,1) 100%)',
