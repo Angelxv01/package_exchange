@@ -87,7 +87,7 @@ export default function App() {
         <SectionPaper sx={{ bgcolor: 'custom.gray', py: 2 }}>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Icon glyph="transactions" size={32} />
-            <Typography variant="h5" component="h2">
+            <Typography variant="h5" component="h2" fontWeight="bold">
               Packages
             </Typography>
           </Box>
@@ -96,7 +96,7 @@ export default function App() {
               <Grid
                 item
                 key={name}
-                xs={2}
+                xs="auto"
                 textAlign="center"
                 bgcolor="common.white"
                 borderRadius={2}
