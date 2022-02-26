@@ -18,8 +18,8 @@ import { getUser } from './services/user';
 import { NUMBER, USD } from './utils/format';
 import Icon from 'supercons';
 
-// const CURRENT_USER = '25660cec-8d41-47e7-b208-165ec6ef20cd';
-const CURRENT_USER = 'de200efe-c9d3-4f12-b295-919daeec2914';
+const CURRENT_USER = '25660cec-8d41-47e7-b208-165ec6ef20cd';
+// const CURRENT_USER = 'de200efe-c9d3-4f12-b295-919daeec2914';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -84,11 +84,7 @@ export default function App() {
         </Box>
 
         <SectionPaper>
-          <Typography
-            variant="h5"
-            component="h2"
-            sx={{ color: 'text.secondary' }}
-          >
+          <Typography variant="h5" component="h2" color="text.secondary">
             My Balance
           </Typography>
           <Typography variant="h3">{USD.format(balance)}</Typography>
@@ -113,8 +109,8 @@ export default function App() {
                 textAlign="center"
                 bgcolor="common.white"
                 borderRadius={2}
-                py={1}
                 px={2}
+                py={1}
                 sx={{
                   background:
                     'linear-gradient(45deg, rgba(255,179,185,1) 0%, rgba(252,245,199,1) 100%)',
@@ -122,10 +118,8 @@ export default function App() {
                 }}
                 onClick={() => setSelected(downloads[[name]])}
               >
-                <Typography fontWeight="bold">{name}</Typography>
-                <Typography mt={1} fontWeight="bold">
-                  {number}
-                </Typography>
+                <Typography>{name}</Typography>
+                <Typography mt={1}>{number}</Typography>
               </Grid>
             ))}
           </Grid>
@@ -160,13 +154,20 @@ export default function App() {
             pt={1}
             borderRadius={2}
           >
-            <Grid item mt="-0.5rem" mr="-1rem">
-              <Icon
-                glyph="view-close-small"
-                size={32}
-                style={{ cursor: 'pointer' }}
-                onClick={() => setSelected(null)}
-              />
+            <Grid container alignItems="center" justifyContent="space-between">
+              <Grid item>
+                <Typography variant="h5" component="h2" color="text.secondary">
+                  Package value
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Icon
+                  glyph="view-close"
+                  size={32}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setSelected(null)}
+                />
+              </Grid>
             </Grid>
             <Grid
               container
@@ -174,10 +175,10 @@ export default function App() {
               alignItems="baseline"
             >
               <Grid item>
-                <Typography variant="h5">{selected.package}</Typography>
+                <Typography variant="h6">{selected.package}</Typography>
               </Grid>
               <Grid item>
-                <Typography variant="h5">
+                <Typography variant="body2" fontSize="1rem">
                   {NUMBER.format(selected.downloadPerUnit)}
                 </Typography>
               </Grid>
