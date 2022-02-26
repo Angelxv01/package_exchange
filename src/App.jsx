@@ -6,7 +6,6 @@ import {
   Paper,
   Box,
   Chip,
-  InputBase,
   Button,
   TextField,
 } from '@mui/material';
@@ -98,14 +97,14 @@ export default function App() {
           </Typography>
         </SectionPaper>
 
-        <SectionPaper sx={{ bgcolor: 'custom.gray', py: 2 }}>
+        <SectionPaper sx={{ bgcolor: 'custom.gray', py: 4 }}>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Icon glyph="transactions" size={32} />
-            <Typography variant="h5" component="h2" fontWeight="bold">
+            <Typography variant="h5" component="h2">
               Packages
             </Typography>
           </Box>
-          <Grid container gap={2} mt={2} justifyContent="center">
+          <Grid container gap={3} mt={4} justifyContent="center">
             {user?.shares?.map(({ name, number }) => (
               <Grid
                 item
@@ -119,7 +118,9 @@ export default function App() {
                 sx={{
                   background:
                     'linear-gradient(45deg, rgba(255,179,185,1) 0%, rgba(252,245,199,1) 100%)',
+                  cursor: 'pointer',
                 }}
+                onClick={() => setSelected(downloads[[name]])}
               >
                 <Typography fontWeight="bold">{name}</Typography>
                 <Typography mt={1} fontWeight="bold">
@@ -151,21 +152,37 @@ export default function App() {
         </Box>
 
         {selected && (
-          <SectionPaper
-            sx={{
-              bgcolor: 'custom.gray',
-              py: 2,
-              display: 'flex',
-              alignItems: 'baseline',
-              justifyContent: 'space-between',
-              gap: 2,
-            }}
+          <Grid
+            container
+            justifyContent="flex-end"
+            bgcolor="secondary.light"
+            p={2}
+            pt={1}
+            borderRadius={2}
           >
-            <Typography variant="h5">{selected.package}</Typography>
-            <Typography variant="h6">
-              {NUMBER.format(selected.downloadPerUnit)}
-            </Typography>
-          </SectionPaper>
+            <Grid item mt="-0.5rem" mr="-1rem">
+              <Icon
+                glyph="view-close-small"
+                size={32}
+                style={{ cursor: 'pointer' }}
+                onClick={() => setSelected(null)}
+              />
+            </Grid>
+            <Grid
+              container
+              justifyContent="space-between"
+              alignItems="baseline"
+            >
+              <Grid item>
+                <Typography variant="h5">{selected.package}</Typography>
+              </Grid>
+              <Grid item>
+                <Typography variant="h5">
+                  {NUMBER.format(selected.downloadPerUnit)}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
         )}
       </Stack>
     </Container>
