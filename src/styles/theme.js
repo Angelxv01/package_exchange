@@ -2,9 +2,9 @@ import { createTheme } from '@mui/material/styles';
 
 export default createTheme({
   typography: {
-    fontFamily: ['Red Hat Display', 'sans-serif'],
+    fontFamily: ['sans-serif', 'Red Hat Display'],
     body2: {
-      fontFamily: ['Roboto Mono', 'monospace'],
+      fontFamily: ['monospace', 'Roboto Mono'],
     },
   },
   palette: {

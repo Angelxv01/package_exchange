@@ -15,10 +15,15 @@ import {
   getLastDayPackageDownload,
 } from './services/packageDownload';
 import { getUser } from './services/user';
+import { tradePackage } from './services/transaction';
 import { NUMBER, USD } from './utils/format';
 import Icon from 'supercons';
+import { v4 as uuid4 } from 'uuid';
+import { roundTo } from './utils/math';
 
 const CURRENT_USER = '25660cec-8d41-47e7-b208-165ec6ef20cd';
+const BUY = 'BUY';
+const SELL = 'SELL';
 // const CURRENT_USER = 'de200efe-c9d3-4f12-b295-919daeec2914';
 
 export default function App() {
@@ -26,6 +31,7 @@ export default function App() {
   const [downloads, setDownloads] = useState(null);
   const [filter, setFilter] = useState('');
   const [selected, setSelected] = useState(null);
+  const [shareNumber, setShareNumber] = useState('');
 
   useEffect(() => {
     const initUser = async () => {
@@ -57,12 +63,31 @@ export default function App() {
       (sum, { name, number }) => sum + calculateShareValue(name, number),
       0,
     );
+  const shareValue =
+    selected && selected.downloadPerUnit * parseInt(shareNumber);
+  const canIBuy = shareValue ? shareValue <= user.cash : false;
 
   const searchPackage = async (e) => {
     e.preventDefault();
     const data = await getLastDayPackageDownload(filter);
     setSelected(data);
     setFilter('');
+  };
+
+  const buyPackage = () => {
+    if (!canIBuy) return;
+    const price = roundTo(shareValue, 2);
+    const transaction = {
+      price,
+      id: uuid4(),
+      user: user.id,
+      type: BUY,
+      package: selected.package,
+      number: parseInt(shareNumber),
+      date: new Date(),
+    };
+
+    tradePackage(transaction);
   };
 
   return (
@@ -165,10 +190,14 @@ export default function App() {
                   glyph="view-close"
                   size={32}
                   style={{ cursor: 'pointer' }}
-                  onClick={() => setSelected(null)}
+                  onClick={() => {
+                    setSelected(null);
+                    setShareNumber('');
+                  }}
                 />
               </Grid>
             </Grid>
+
             <Grid
               container
               justifyContent="space-between"
@@ -182,6 +211,22 @@ export default function App() {
                   {NUMBER.format(selected.downloadPerUnit)}
                 </Typography>
               </Grid>
+            </Grid>
+
+            <Grid container gap={1}>
+              <TextField
+                value={shareNumber}
+                onChange={({ target }) => setShareNumber(target.value)}
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+              />
+              <Button
+                variant="contained"
+                disabled={!canIBuy}
+                onClick={buyPackage}
+              >
+                Buy
+              </Button>
+              {shareNumber && <Typography>{USD.format(shareValue)}</Typography>}
             </Grid>
           </Grid>
         )}
