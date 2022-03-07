@@ -22,9 +22,9 @@ import { v4 as uuid4 } from 'uuid';
 import { roundTo } from './utils/math';
 
 const CURRENT_USER = '25660cec-8d41-47e7-b208-165ec6ef20cd';
+// const CURRENT_USER = 'de200efe-c9d3-4f12-b295-919daeec2914';
 const BUY = 'BUY';
 const SELL = 'SELL';
-// const CURRENT_USER = 'de200efe-c9d3-4f12-b295-919daeec2914';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -55,17 +55,8 @@ export default function App() {
 
   if (!(user && downloads)) return null;
 
-  const calculateShareValue = (name, number) =>
+  const getPackageValue = (name, number) =>
     Math.round(number * downloads[[name]]?.downloadPerUnit * 10000) / 10000;
-  const balance =
-    user?.cash +
-    user?.shares?.reduce(
-      (sum, { name, number }) => sum + calculateShareValue(name, number),
-      0,
-    );
-  const shareValue =
-    selected && selected.downloadPerUnit * parseInt(shareNumber);
-  const canIBuy = shareValue ? shareValue <= user.cash : false;
 
   const searchPackage = async (e) => {
     e.preventDefault();
@@ -89,6 +80,16 @@ export default function App() {
 
     tradePackage(transaction);
   };
+
+  const balance =
+    user?.cash +
+    user?.shares?.reduce(
+      (sum, { name, number }) => sum + getPackageValue(name, number),
+      0,
+    );
+  const shareValue =
+    selected && selected.downloadPerUnit * parseInt(shareNumber);
+  const canIBuy = shareValue ? shareValue <= user.cash : false;
 
   return (
     <Container sx={{ p: 1 }}>
