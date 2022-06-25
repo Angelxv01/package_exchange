@@ -65,9 +65,11 @@ export default function App() {
     setFilter('');
   };
 
-  const buyPackage = () => {
+  const buyPackage = async () => {
     if (!canIBuy) return;
     const price = roundTo(shareValue, 2);
+
+    // create and send transaction
     const transaction = {
       price,
       id: uuid4(),
@@ -77,8 +79,9 @@ export default function App() {
       number: parseInt(shareNumber),
       date: new Date(),
     };
-
-    tradePackage(transaction);
+    const v = await tradePackage(transaction);
+    console.log(v);
+    setSelected(false);
   };
 
   const balance =
